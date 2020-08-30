@@ -7,6 +7,7 @@ includeWithFlags ':bom',                                 'bom', 'publish'
 
 // Published Java projects
 includeWithFlags ':annotation-processor',                'java', 'publish', 'relocate'
+includeWithFlags ':avro',                                'java', 'publish', 'relocate'
 includeWithFlags ':brave',                               'java', 'publish', 'relocate'
 includeWithFlags ':core',                                'java', 'publish', 'shade', 'trim'
 includeWithFlags ':eureka',                              'java', 'publish', 'relocate'

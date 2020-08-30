@@ -1,0 +1,5 @@
+dependencies {
+    // Avro
+    api 'org.apache.avro:avro:1.10.0' // TODO: avro-ipc has dependency on this, so can remove probably
+    api 'org.apache.avro:avro-ipc:1.10.0'
+}
