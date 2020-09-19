@@ -19,16 +19,12 @@ package com.linecorp.armeria.internal.server.thrift;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.linecorp.armeria.common.thrift.ThriftProtocolFactories;
 import com.linecorp.armeria.server.Route;
 import com.linecorp.armeria.server.RoutePathType;
 import com.linecorp.armeria.server.Service;
 import com.linecorp.armeria.server.ServiceConfig;
 import com.linecorp.armeria.server.docs.*;
-import com.linecorp.armeria.server.thrift.THttpService;
-import org.apache.thrift.*;
-import org.apache.thrift.meta_data.*;
-import org.apache.thrift.protocol.TType;
+
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
@@ -42,7 +38,7 @@ import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static java.util.Objects.requireNonNull;
 
 /**
- * {@link DocServicePlugin} implementation that supports {@link THttpService}s.
+ * {@link DocServicePlugin} implementation that supports {@link AvroHttpService}s.
  */
 public final class AvroDocServicePlugin implements DocServicePlugin {
 
@@ -64,12 +60,12 @@ public final class AvroDocServicePlugin implements DocServicePlugin {
 
     @Override
     public String name() {
-        return "thrift";
+        return "avro";
     }
 
     @Override
     public Set<Class<? extends Service<?, ?>>> supportedServiceTypes() {
-        return ImmutableSet.of(THttpService.class);
+        return ImmutableSet.of(AvroHttpService.class);
     }
 
     @Override

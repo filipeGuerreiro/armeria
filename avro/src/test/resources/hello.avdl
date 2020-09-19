@@ -1,0 +1,7 @@
+/**
+ * An example protocol in Avro IDL
+ */
+@namespace("com.linecorp.armeria.avro.testing")
+protocol Hello {
+  string hello(string greeting);
+}
