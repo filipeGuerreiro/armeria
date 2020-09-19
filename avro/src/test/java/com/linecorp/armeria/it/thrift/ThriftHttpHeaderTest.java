@@ -123,7 +123,7 @@ public class ThriftHttpHeaderTest {
         final Callback callback = new Callback(result);
 
         try (SafeCloseable ignored = Clients.withHeader(AUTHORIZATION, SECRET)) {
-            client.hello("armeria", callback);
+            client.hello("com/linecorp/armeria", callback);
         }
 
         assertThat(result.poll(10, TimeUnit.SECONDS)).isEqualTo("Hello, armeria!");

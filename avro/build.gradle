@@ -2,4 +2,30 @@ dependencies {
     // Avro
     api 'org.apache.avro:avro:1.10.0' // TODO: avro-ipc has dependency on this, so can remove probably
     api 'org.apache.avro:avro-ipc:1.10.0'
+    compile 'org.apache.avro:avro-tools:1.10.0'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.commercehub.gradle.plugin:gradle-avro-plugin:0.21.0"
+    }
+}
+
+apply plugin: "com.commercehub.gradle.plugin.avro-base"
+
+def generateProtocol = tasks.register("generateProtocol", com.commercehub.gradle.plugin.avro.GenerateAvroProtocolTask) {
+    source file("src/test")
+    include("**/*.avdl")
+    outputDir = file("build/generated-avro-main-avpr")
+}
+
+tasks.register("generateSchema", com.commercehub.gradle.plugin.avro.GenerateAvroSchemaTask) {
+    dependsOn generateProtocol
+    source file("src/test")
+    source file("build/generated-avro-main-avpr")
+    include("**/*.avpr")
+    outputDir = file("build/generated-main-avro-avsc")
 }

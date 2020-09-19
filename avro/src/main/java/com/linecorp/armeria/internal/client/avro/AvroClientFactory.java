@@ -14,28 +14,23 @@
  * under the License.
  */
 
-package com.linecorp.armeria.internal.client.thrift;
-
-import java.lang.reflect.Proxy;
-import java.util.Set;
+package com.linecorp.armeria.internal.client.avro;
 
 import com.google.common.collect.ImmutableSet;
-
-import com.linecorp.armeria.client.ClientBuilderParams;
-import com.linecorp.armeria.client.ClientFactory;
-import com.linecorp.armeria.client.ClientOptions;
-import com.linecorp.armeria.client.DecoratingClientFactory;
-import com.linecorp.armeria.client.RpcClient;
+import com.linecorp.armeria.client.*;
 import com.linecorp.armeria.client.avro.THttpClient;
 import com.linecorp.armeria.common.Scheme;
 import com.linecorp.armeria.common.SerializationFormat;
 import com.linecorp.armeria.common.SessionProtocol;
 import com.linecorp.armeria.common.thrift.ThriftSerializationFormats;
 
+import java.lang.reflect.Proxy;
+import java.util.Set;
+
 /**
  * A {@link DecoratingClientFactory} that creates a Thrift-over-HTTP client.
  */
-final class THttpClientFactory extends DecoratingClientFactory {
+final class AvroClientFactory extends DecoratingClientFactory {
 
     private static final Set<Scheme> SUPPORTED_SCHEMES;
 
@@ -54,7 +49,7 @@ final class THttpClientFactory extends DecoratingClientFactory {
      *
      * @throws IllegalArgumentException if the specified {@link ClientFactory} does not support HTTP
      */
-    THttpClientFactory(ClientFactory httpClientFactory) {
+    AvroClientFactory(ClientFactory httpClientFactory) {
         super(httpClientFactory);
     }
 
@@ -70,12 +65,12 @@ final class THttpClientFactory extends DecoratingClientFactory {
         final Class<?> clientType = params.clientType();
         final ClientOptions options = params.options();
         final RpcClient delegate = options.decoration().rpcDecorate(
-                new THttpClientDelegate(newHttpClient(params),
+                new AvroClientDelegate(newHttpClient(params),
                                         params.scheme().serializationFormat()));
 
         if (clientType == THttpClient.class) {
             // Create a THttpClient with path.
-            return new DefaultTHttpClient(params, delegate, meterRegistry());
+            return new DefaultAvroHttpClient(params, delegate, meterRegistry());
         }
 
         // Create a THttpClient without path.
@@ -85,11 +80,11 @@ final class THttpClientFactory extends DecoratingClientFactory {
                                        "/", THttpClient.class,
                                        options);
 
-        final THttpClient thriftClient = new DefaultTHttpClient(delegateParams, delegate, meterRegistry());
+        final THttpClient thriftClient = new DefaultAvroHttpClient(delegateParams, delegate, meterRegistry());
 
         return Proxy.newProxyInstance(
                 clientType.getClassLoader(),
                 new Class<?>[] { clientType },
-                new THttpClientInvocationHandler(params, thriftClient));
+                new AvroClientInvocationHandler(params, thriftClient));
     }
 }

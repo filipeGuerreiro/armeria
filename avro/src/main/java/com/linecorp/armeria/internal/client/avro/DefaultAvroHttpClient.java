@@ -14,27 +14,26 @@
  * under the License.
  */
 
-package com.linecorp.armeria.internal.client.thrift;
-
-import static com.linecorp.armeria.internal.common.ArmeriaHttpUtil.concatPaths;
-import static java.util.Objects.requireNonNull;
-
-import javax.annotation.Nullable;
+package com.linecorp.armeria.internal.client.avro;
 
 import com.linecorp.armeria.client.ClientBuilderParams;
 import com.linecorp.armeria.client.RpcClient;
 import com.linecorp.armeria.client.UserClient;
-import com.linecorp.armeria.client.avro.THttpClient;
+import com.linecorp.armeria.client.avro.AvroHttpClient;
 import com.linecorp.armeria.common.HttpMethod;
 import com.linecorp.armeria.common.RpcRequest;
 import com.linecorp.armeria.common.RpcResponse;
 import com.linecorp.armeria.internal.common.PathAndQuery;
-
 import io.micrometer.core.instrument.MeterRegistry;
 
-final class DefaultTHttpClient extends UserClient<RpcRequest, RpcResponse> implements THttpClient {
+import javax.annotation.Nullable;
 
-    DefaultTHttpClient(ClientBuilderParams params, RpcClient delegate, MeterRegistry meterRegistry) {
+import static com.linecorp.armeria.internal.common.ArmeriaHttpUtil.concatPaths;
+import static java.util.Objects.requireNonNull;
+
+final class DefaultAvroHttpClient extends UserClient<RpcRequest, RpcResponse> implements AvroHttpClient {
+
+    DefaultAvroHttpClient(ClientBuilderParams params, RpcClient delegate, MeterRegistry meterRegistry) {
         super(params, delegate, meterRegistry,
               RpcResponse::from, (ctx, cause) -> RpcResponse.ofFailure(cause));
     }

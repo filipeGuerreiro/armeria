@@ -14,25 +14,9 @@
  * under the License.
  */
 
-package com.linecorp.armeria.internal.client.thrift;
+package com.linecorp.armeria.internal.client.avro;
 
-import static com.linecorp.armeria.common.thrift.AsyncMethodCallbacks.invokeOnError;
-
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
-
-import javax.annotation.Nullable;
-
-import org.apache.thrift.async.AsyncMethodCallback;
-
-import com.linecorp.armeria.client.ClientBuilderParams;
-import com.linecorp.armeria.client.ClientOptions;
-import com.linecorp.armeria.client.ClientRequestContext;
-import com.linecorp.armeria.client.ClientRequestContextCaptor;
-import com.linecorp.armeria.client.Clients;
+import com.linecorp.armeria.client.*;
 import com.linecorp.armeria.client.endpoint.EndpointGroup;
 import com.linecorp.armeria.client.avro.THttpClient;
 import com.linecorp.armeria.common.RpcResponse;
@@ -41,15 +25,25 @@ import com.linecorp.armeria.common.util.AbstractUnwrappable;
 import com.linecorp.armeria.common.util.CompletionActions;
 import com.linecorp.armeria.common.util.Exceptions;
 import com.linecorp.armeria.common.util.SafeCloseable;
+import org.apache.thrift.async.AsyncMethodCallback;
 
-final class THttpClientInvocationHandler
+import javax.annotation.Nullable;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
+
+import static com.linecorp.armeria.common.thrift.AsyncMethodCallbacks.invokeOnError;
+
+final class AvroClientInvocationHandler
         extends AbstractUnwrappable<THttpClient> implements InvocationHandler, ClientBuilderParams {
 
     private static final Object[] NO_ARGS = new Object[0];
 
     private final ClientBuilderParams params;
 
-    THttpClientInvocationHandler(ClientBuilderParams params, THttpClient thriftClient) {
+    AvroClientInvocationHandler(ClientBuilderParams params, THttpClient thriftClient) {
         super(thriftClient);
         this.params = params;
     }
